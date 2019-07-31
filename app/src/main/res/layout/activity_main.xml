@@ -10,7 +10,8 @@
         android:id="@+id/layHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <LinearLayout
             android:id="@+id/layLogin"
@@ -57,7 +58,6 @@
             android:id="@+id/layGame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <ScrollView
@@ -74,6 +74,7 @@
                     android:layout_gravity="top"
                     android:layout_marginTop="10px"
                     android:layout_marginBottom="10px"
+                    android:minHeight="200dp"
                     android:orientation="vertical"
                     android:padding="10dp">
 
@@ -116,6 +117,32 @@
             </LinearLayout>
 
             <Switch
+                android:id="@+id/swtPredict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="40dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="Command Builder:"
+                android:textColor="@color/colorGrey" />
+
+            <HorizontalScrollView
+                android:id="@+id/scrPredict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layPredict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <Switch
                 android:id="@+id/swtCommon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,13 +154,14 @@
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
                 android:text="Common Commands:"
-                android:textColor="@color/colorGrey" />
+                android:textColor="@color/colorGrey"
+                android:visibility="gone" />
 
             <TableLayout
                 android:id="@+id/layCommon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:visibility="visible">
+                android:visibility="gone">
 
                 <TableRow
                     android:layout_width="match_parent"

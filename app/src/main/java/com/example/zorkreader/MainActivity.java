@@ -3,9 +3,12 @@ package com.example.zorkreader;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +28,7 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,13 +38,19 @@ public class MainActivity extends AppCompatActivity {
     private View defaultView;
     private MenuItem quit;
     private MenuItem help;
-    private static final String[] commands = {"check", "move", "take", "use", "equip", "attack",
-            "open", "status"};
+    private ArrayList<String> commands = new ArrayList<>(Arrays.asList("check", "move", "take",
+            "use", "equip", "attack", "open", "status"));
     private ArrayList<String> used = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        used.add("room");
+        used.add("move");
+        used.add("north");
+        used.add("south");
+        used.add("east");
+        used.add("west");
         setContentView(R.layout.activity_main);
         setTitle("Start a game of Zork");
         defaultView = findViewById(R.id.layHolder);
@@ -56,6 +66,76 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        txtCommand.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                LinearLayout keywords = findViewById(R.id.layPredict);
+                if (charSequence.toString().contains(" ")) {
+                    keywords.removeAllViews();
+                    if (used.size() > 0) {
+                        for (String word : used) {
+                            String prev = "";
+                            if (charSequence.toString().split(" ").length > 1) {
+                                prev = charSequence.toString().split(" ")[1].toLowerCase();
+                            }
+                            if (word.toLowerCase().startsWith(prev)) {
+                                Button btn = new Button(getApplicationContext());
+                                btn.setText(word);
+                                btn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        TextView txtCommand = findViewById(R.id.txtCommand);
+                                        String text = txtCommand.getText().toString().split(" ")[0];
+                                        String btnText = ((Button) view).getText().toString()
+                                                .replace(" ", "-");
+                                        if (btnText.contains(text)) {
+                                            txtCommand.setText("");
+                                            txtCommand.append(btnText);
+                                        } else {
+                                            txtCommand.setText(text.trim() + " ");
+                                            txtCommand.append(btnText);
+                                            txtCommand.append("");
+                                        }
+                                    }
+                                });
+                                keywords.addView(btn);
+                            }
+                        }
+                    }
+                    if (keywords.getChildCount() == 0) {
+                        TextView tv = new TextView(getApplicationContext());
+                        tv.setText("No predictions");
+                        keywords.addView(tv);
+                    }
+                } else {
+                    keywords.removeAllViews();
+                    for (String word : commands) {
+                        Button btn = new Button(getApplicationContext());
+                        btn.setText(word);
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                TextView txtCommand = findViewById(R.id.txtCommand);
+                                txtCommand.setText("");
+                                txtCommand.append(((Button)view).getText() + " ");
+                                txtCommand.requestFocus();
+                            }
+                        });
+                        keywords.addView(btn);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         Switch show = findViewById(R.id.swtCommon);
         show.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
 
@@ -69,8 +149,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        Switch predict = findViewById(R.id.swtPredict);
+        predict.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                LinearLayout layout = findViewById(R.id.layPredict);
+                if (checked) {
+                    layout.setVisibility(View.VISIBLE);
+                } else {
+                    layout.setVisibility(View.GONE);
+                }
+            }
+        });
         findViewById(R.id.layCommon).setVisibility(View.GONE);
         findViewById(R.id.layGame).setVisibility(View.GONE);
+        findViewById(R.id.layPredict).setVisibility(View.GONE);
     }
 
     @Override
@@ -88,8 +182,22 @@ public class MainActivity extends AppCompatActivity {
         if (wait || text.startsWith("load") || text.startsWith("play")) {
             return;
         }
+        String[] splits = text.split(" ");
+        if (splits.length > 1) {
+            String toAdd = splits[1].replace("-", " ");
+            used.remove(toAdd);
+            used.add(0, toAdd);
+
+            toAdd = splits[0].replace("-", " ");
+            commands.remove(toAdd);
+            commands.add(0, toAdd);
+        } else {
+            String toAdd = text.replace("-", " ");
+            commands.remove(toAdd);
+            commands.add(0, toAdd);
+        }
         wait = true;
-        Thread t = new Thread(new Command(view, text));
+        Thread t = new Thread(new Command(view, text.trim()));
         t.start();
     }
 
