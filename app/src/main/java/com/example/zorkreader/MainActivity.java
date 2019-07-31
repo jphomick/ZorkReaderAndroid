@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             return "Invalid Read";
         }
-        return result.trim();
+        return result.trim() + "\n---";
     }
 
     private String processStart(String command) {
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             return "Invalid Read";
         }
-        return result.trim();
+        return result.trim() + "\n---";
     }
 
     class Command implements Runnable {
