@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="startNew"
-                    android:text="New Game" />
+                    android:text="New Player" />
 
                 <Button
                     android:id="@+id/btnLoad"
@@ -60,20 +60,12 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Welcome to Zork!"
-                android:textColor="@color/colorGrey" />
-
             <ScrollView
                 android:id="@+id/scrHistory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top|center_vertical"
-                android:layout_weight="1"
-                android:paddingBottom="10dp">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:id="@+id/layHistory"
@@ -82,13 +74,14 @@
                     android:layout_gravity="top"
                     android:layout_marginTop="10px"
                     android:layout_marginBottom="10px"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/txtHistory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="This is the start of your Zork history"
+                        android:text="This is the start of your Zork history\n---"
                         android:textAlignment="center"
                         android:textColor="@color/colorBlack" />
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/itemHelp"
+        android:title="Help"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/itemQuit"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="Quit"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/itemReset"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="Reset Zork"
+        app:showAsAction="never" />
+</menu>

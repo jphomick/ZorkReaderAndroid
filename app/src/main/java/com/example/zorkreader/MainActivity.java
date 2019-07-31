@@ -1,9 +1,15 @@
 package com.example.zorkreader;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -18,16 +24,26 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private long player = -1;
+    private String name = "";
     private boolean wait = false;
+    private View defaultView;
+    private MenuItem quit;
+    private MenuItem help;
+    private static final String[] commands = {"check", "move", "take", "use", "equip", "attack",
+            "open", "status"};
+    private ArrayList<String> used = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Start a game of Zork");
+        defaultView = findViewById(R.id.layHolder);
         TextView txtCommand = findViewById(R.id.txtCommand);
         txtCommand.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -57,6 +73,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.layGame).setVisibility(View.GONE);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        quit = menu.findItem(R.id.itemQuit);
+        help = menu.findItem(R.id.itemHelp);
+        return true;
+    }
+
     public void submit(View view) {
         TextView txtCommand = findViewById(R.id.txtCommand);
         String text = txtCommand.getText().toString().toLowerCase();
@@ -75,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         wait = true;
+        name = text;
         Thread t = new Thread(new Start(view, "play " + text));
         t.start();
     }
@@ -108,10 +134,51 @@ public class MainActivity extends AppCompatActivity {
         t.start();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemQuit:
+                TextView txtStart = findViewById(R.id.txtStart);
+                txtStart.setText("");
+                txtStart.setHint("Enter a new name or load an id");
+                recreate();
+                return true;
+
+            case R.id.itemReset:
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Are you sure you want to reset the " +
+                        "entire Zork game, along with all players?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        wait = true;
+                        Thread t = new Thread(new Command(defaultView, "reset"));
+                        t.start();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                builder.create().show();
+                return true;
+
+            case R.id.itemHelp:
+                wait = true;
+                Thread t = new Thread(new Command(defaultView, "help"));
+                t.start();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     private String processCommand(String command) {
         String result = "Unknown Command";
         try {
-            if (player < 0) {
+            if (player < 0 && !command.equals("reset")) {
                 return "No current player!";
             } else {
                 if (!(command.startsWith("check") || command.startsWith("reset")
@@ -126,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
                 result = ReadHelper.readTextFromUrl("https://quiet-tundra-15027.herokuapp.com/" + command.trim());
                 if (command.equals("reset")) {
                     player = -1;
+                    name = "";
+                    return "Reset Completed";
                 }
             }
         } catch (IOException e) {
@@ -147,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                     result = ReadHelper.readTextFromUrl("https://quiet-tundra-15027.herokuapp.com/" + command.trim());
                     if (command.startsWith("load")) {
                         player = Long.parseLong(command.substring(5));
+                        name = result.substring(14, result.length() - 1);
                     }
                 }
             }
@@ -202,6 +272,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+            if (result.startsWith("Reset Completed")) {
+                TextView txtStart = findViewById(R.id.txtStart);
+                txtStart.setText("");
+                txtStart.setHint("Enter a new name or load an id");
+                recreate();
+                return;
+            }
             TextView txtCommand = findViewById(R.id.txtCommand);
             LinearLayout layout = findViewById(R.id.layHistory);
             txtCommand.setText("");
@@ -244,8 +321,11 @@ public class MainActivity extends AppCompatActivity {
                 txtStart.setText("");
                 txtStart.setHint("Please enter a valid id");
             } else {
+                setTitle(name + " - " + player);
                 findViewById(R.id.layGame).setVisibility(View.VISIBLE);
                 findViewById(R.id.layLogin).setVisibility(View.GONE);
+                quit.setVisible(true);
+                help.setVisible(true);
                 txtCommand.setText("");
                 TextView txtNew = new TextView(view.getContext());
                 txtNew.setId(layout.getChildCount());
