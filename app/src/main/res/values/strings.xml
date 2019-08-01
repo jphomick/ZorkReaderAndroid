@@ -3,7 +3,7 @@
     <string name="load">Enter a new name or load an id</string>
     <string name="new_player">New Player</string>
     <string name="load_id">Load Id</string>
-    <string name="zork_history">This is the start of your Zork history ---</string>
+    <string name="zork_history">This is the start of your Zork history\n---</string>
     <string name="enter_a_command">Enter a command</string>
     <string name="go">Go!</string>
     <string name="command_builder">Command Builder:</string>

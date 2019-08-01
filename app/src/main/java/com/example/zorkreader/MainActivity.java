@@ -125,26 +125,28 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     keywords.removeAllViews();
                     for (String word : commands) {
-                        Button btn = new Button(getApplicationContext());
-                        btn.setText(word);
-                        btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                TextView txtCommand = findViewById(R.id.txtCommand);
-                                txtCommand.setText("");
-                                txtCommand.append(((Button)view).getText() + " ");
-                                txtCommand.requestFocus();
-                                HorizontalScrollView scrPredict = findViewById(R.id.scrPredict);
-                                scrPredict.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        HorizontalScrollView scrPredict = findViewById(R.id.scrPredict);
-                                        scrPredict.fullScroll(ScrollView.FOCUS_LEFT);
-                                    }
-                                });
-                            }
-                        });
-                        keywords.addView(btn);
+                        if (word.toLowerCase().startsWith(charSequence.toString().toLowerCase())) {
+                            Button btn = new Button(getApplicationContext());
+                            btn.setText(word);
+                            btn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    TextView txtCommand = findViewById(R.id.txtCommand);
+                                    txtCommand.setText("");
+                                    txtCommand.append(((Button) view).getText() + " ");
+                                    txtCommand.requestFocus();
+                                    HorizontalScrollView scrPredict = findViewById(R.id.scrPredict);
+                                    scrPredict.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            HorizontalScrollView scrPredict = findViewById(R.id.scrPredict);
+                                            scrPredict.fullScroll(ScrollView.FOCUS_LEFT);
+                                        }
+                                    });
+                                }
+                            });
+                            keywords.addView(btn);
+                        }
                     }
                 }
             }
