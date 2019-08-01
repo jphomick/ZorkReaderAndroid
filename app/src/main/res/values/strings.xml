@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">ZorkReader</string>
+    <string name="load">Enter a new name or load an id</string>
+    <string name="new_player">New Player</string>
+    <string name="load_id">Load Id</string>
+    <string name="zork_history">This is the start of your Zork history ---</string>
+    <string name="enter_a_command">Enter a command</string>
+    <string name="go">Go!</string>
+    <string name="command_builder">Command Builder:</string>
+    <string name="common_commands">Common Commands:</string>
+    <string name="move_north">Move North</string>
+    <string name="move_south">Move South</string>
+    <string name="move_west">Move West</string>
+    <string name="move_east">Move East</string>
+    <string name="check_move">Check Move</string>
+    <string name="check_room">Check Room</string>
+    <string name="status">Status</string>
 </resources>

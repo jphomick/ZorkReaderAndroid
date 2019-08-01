@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
-                android:hint="Enter a new name or load an id"
+                android:hint="@string/load"
                 android:inputType="text"
                 android:textAlignment="center" />
 
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="startNew"
-                    android:text="New Player" />
+                    android:text="@string/new_player" />
 
                 <Button
                     android:id="@+id/btnLoad"
@@ -49,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="startLoad"
-                    android:text="Load Id" />
+                    android:text="@string/load_id" />
 
             </LinearLayout>
         </LinearLayout>
@@ -72,8 +72,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:layout_marginTop="10px"
-                    android:layout_marginBottom="10px"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:minHeight="200dp"
                     android:orientation="vertical"
                     android:padding="10dp">
@@ -82,7 +82,7 @@
                         android:id="@+id/txtHistory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="This is the start of your Zork history\n---"
+                        android:text="@string/zork_history"
                         android:textAlignment="center"
                         android:textColor="@color/colorBlack" />
 
@@ -101,7 +101,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:gravity="start|top"
-                    android:hint="Enter a command"
+                    android:hint="@string/enter_a_command"
                     android:imeOptions="actionGo"
                     android:inputType="text"
                     android:textAlignment="center" />
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:onClick="submit"
-                    android:text="Go!" />
+                    android:text="@string/go" />
 
             </LinearLayout>
 
@@ -127,7 +127,7 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
-                android:text="Command Builder:"
+                android:text="@string/command_builder"
                 android:textColor="@color/colorGrey" />
 
             <HorizontalScrollView
@@ -139,6 +139,7 @@
                     android:id="@+id/layPredict"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal" />
             </HorizontalScrollView>
 
@@ -153,7 +154,7 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
-                android:text="Common Commands:"
+                android:text="@string/common_commands"
                 android:textColor="@color/colorGrey"
                 android:visibility="gone" />
 
@@ -173,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Move North" />
+                        android:text="@string/move_north" />
 
                     <Button
                         android:id="@+id/btnMoveSouth"
@@ -181,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Move South" />
+                        android:text="@string/move_south" />
 
                 </TableRow>
 
@@ -195,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Move West" />
+                        android:text="@string/move_west" />
 
                     <Button
                         android:id="@+id/btnMoveEast"
@@ -203,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Move East" />
+                        android:text="@string/move_east" />
                 </TableRow>
 
                 <TableRow
@@ -216,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Check Move" />
+                        android:text="@string/check_move" />
 
                     <Button
                         android:id="@+id/btnCheckRoom"
@@ -224,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Check Room" />
+                        android:text="@string/check_room" />
 
                     <Button
                         android:id="@+id/btnStatus"
@@ -232,7 +233,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="buttonCommand"
-                        android:text="Status" />
+                        android:text="@string/status" />
 
                 </TableRow>
             </TableLayout>

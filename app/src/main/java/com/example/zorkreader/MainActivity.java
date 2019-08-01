@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -78,7 +79,15 @@ public class MainActivity extends AppCompatActivity {
                 if (charSequence.toString().contains(" ")) {
                     keywords.removeAllViews();
                     if (used.size() > 0) {
-                        for (String word : used) {
+                        ArrayList<String> toUse = new ArrayList<>(used);
+                        if (charSequence.toString().contains("move")) {
+                            toUse = new ArrayList<>(Arrays.asList("north", "south", "east", "west"));
+                        } else if (charSequence.toString().contains("check")) {
+                            toUse = new ArrayList<>(Arrays.asList("room", "move"));
+                        } else if (charSequence.toString().contains("status")) {
+                            toUse = new ArrayList<>();
+                        }
+                        for (String word : toUse) {
                             String prev = "";
                             if (charSequence.toString().split(" ").length > 1) {
                                 prev = charSequence.toString().split(" ")[1].toLowerCase();
@@ -124,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
                                 txtCommand.setText("");
                                 txtCommand.append(((Button)view).getText() + " ");
                                 txtCommand.requestFocus();
+                                HorizontalScrollView scrPredict = findViewById(R.id.scrPredict);
+                                scrPredict.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        HorizontalScrollView scrPredict = findViewById(R.id.scrPredict);
+                                        scrPredict.fullScroll(ScrollView.FOCUS_LEFT);
+                                    }
+                                });
                             }
                         });
                         keywords.addView(btn);
@@ -185,16 +202,22 @@ public class MainActivity extends AppCompatActivity {
         String[] splits = text.split(" ");
         if (splits.length > 1) {
             String toAdd = splits[1].replace("-", " ");
-            used.remove(toAdd);
-            used.add(0, toAdd);
+            if (used.contains(toAdd)) {
+                used.remove(toAdd);
+                used.add(0, toAdd);
+            }
 
             toAdd = splits[0].replace("-", " ");
-            commands.remove(toAdd);
-            commands.add(0, toAdd);
+            if (commands.contains(toAdd)) {
+                commands.remove(toAdd);
+                commands.add(0, toAdd);
+            }
         } else {
             String toAdd = text.replace("-", " ");
-            commands.remove(toAdd);
-            commands.add(0, toAdd);
+            if (commands.contains(toAdd)) {
+                commands.remove(toAdd);
+                commands.add(0, toAdd);
+            }
         }
         wait = true;
         Thread t = new Thread(new Command(view, text.trim()));
@@ -209,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
         }
         wait = true;
         name = text;
+        txtStart.clearFocus();
         Thread t = new Thread(new Start(view, "play " + text));
         t.start();
     }
@@ -227,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         wait = true;
+        txtStart.clearFocus();
         Thread t = new Thread(new Start(view, "load " + id));
         t.start();
     }
@@ -386,6 +411,20 @@ public class MainActivity extends AppCompatActivity {
                 txtStart.setHint("Enter a new name or load an id");
                 recreate();
                 return;
+            } else if (result.contains("Things in the")) {
+                String[] words = result.split("\n");
+                for (int i = 1; i < words.length; i++) {
+                    if (words[i].length() > 0 && !words[i].contains("Things in the") &&
+                            !words[i].contains("---")) {
+                        String toAdd = words[i].replaceAll(" x\\d+", "")
+                                .toLowerCase();
+                        used.remove(toAdd);
+                        used.add(0, toAdd);
+                    }
+                }
+            } else if (result.toLowerCase().contains("torch")) {
+                used.remove("torch");
+                used.add(0, "torch");
             }
             TextView txtCommand = findViewById(R.id.txtCommand);
             LinearLayout layout = findViewById(R.id.layHistory);
