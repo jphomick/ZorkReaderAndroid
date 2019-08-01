@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         used.add("east");
         used.add("west");
         setContentView(R.layout.activity_main);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        long prevId = sharedPref.getLong("id", 0);
+        if (prevId != 0) {
+            TextView txtStart = findViewById(R.id.txtStart);
+            txtStart.setText(String.valueOf(prevId));
+        }
         setTitle("Start a game of Zork");
         defaultView = findViewById(R.id.layHolder);
         TextView txtCommand = findViewById(R.id.txtCommand);
@@ -223,6 +230,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         wait = true;
+        findViewById(R.id.prgSentCommand).setVisibility(View.VISIBLE);
+        findViewById(R.id.btnSubmit).setVisibility(View.GONE);
         Thread t = new Thread(new Command(view, text.trim()));
         t.start();
     }
@@ -234,8 +243,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         wait = true;
+        findViewById(R.id.prgLoading).setVisibility(View.VISIBLE);
         name = text;
-        txtStart.clearFocus();
+        findViewById(R.id.txtCommand).requestFocus();
         Thread t = new Thread(new Start(view, "play " + text));
         t.start();
     }
@@ -254,7 +264,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         wait = true;
-        txtStart.clearFocus();
+        findViewById(R.id.prgLoading).setVisibility(View.VISIBLE);
+        findViewById(R.id.txtCommand).requestFocus();
         Thread t = new Thread(new Start(view, "load " + id));
         t.start();
     }
@@ -272,6 +283,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (wait) {
+            return false;
+        }
         switch (item.getItemId()) {
             case R.id.itemQuit:
                 TextView txtStart = findViewById(R.id.txtStart);
@@ -287,6 +301,10 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         wait = true;
+                        setTitle("Resetting Zork");
+                        findViewById(R.id.prgLoading).setVisibility(View.VISIBLE);
+                        findViewById(R.id.layLogin).setVisibility(View.GONE);
+                        findViewById(R.id.layGame).setVisibility(View.GONE);
                         Thread t = new Thread(new Command(defaultView, "reset"));
                         t.start();
                     }
@@ -301,6 +319,8 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.itemHelp:
                 wait = true;
+                findViewById(R.id.prgSentCommand).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnSubmit).setVisibility(View.GONE);
                 Thread t = new Thread(new Command(defaultView, "help"));
                 t.start();
                 return true;
@@ -417,8 +437,10 @@ public class MainActivity extends AppCompatActivity {
             } else if (result.contains("Things in the")) {
                 String[] words = result.split("\n");
                 for (int i = 1; i < words.length; i++) {
-                    if (words[i].length() > 0 && !words[i].contains("Things in the") &&
-                            !words[i].contains("---")) {
+                    if (words[i].contains("---")) {
+                        break;
+                    }
+                    if (words[i].length() > 0 && !words[i].contains("Things in the")) {
                         String toAdd = words[i].replaceAll(" x\\d+", "")
                                 .toLowerCase();
                         used.remove(toAdd);
@@ -458,6 +480,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             wait = false;
+            findViewById(R.id.prgSentCommand).setVisibility(View.GONE);
+            findViewById(R.id.btnSubmit).setVisibility(View.VISIBLE);
         }
     }
 
@@ -502,8 +526,13 @@ public class MainActivity extends AppCompatActivity {
                         scrHistory.fullScroll(ScrollView.FOCUS_DOWN);
                     }
                 });
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putLong("id", player);
+                editor.apply();
             }
             wait = false;
+            findViewById(R.id.prgLoading).setVisibility(View.GONE);
         }
     }
 }
