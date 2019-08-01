@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
                             if (charSequence.toString().split(" ").length > 1) {
                                 prev = charSequence.toString().split(" ")[1].toLowerCase();
                             }
-                            if (word.toLowerCase().startsWith(prev)) {
+                            if (word.toLowerCase().startsWith(prev) ||
+                                    word.replace(" ", "-").toLowerCase().startsWith(prev)) {
                                 Button btn = new Button(getApplicationContext());
                                 btn.setText(word);
                                 btn.setOnClickListener(new View.OnClickListener() {
@@ -422,9 +423,18 @@ public class MainActivity extends AppCompatActivity {
                         used.add(0, toAdd);
                     }
                 }
-            } else if (result.toLowerCase().contains("torch")) {
-                used.remove("torch");
-                used.add(0, "torch");
+            } else if (result.contains("Items in your inventory")) {
+                String[] words = result.split("\n");
+                for (int i = 4; i < words.length; i++) {
+                    if (words[i].length() > 0 && !words[i].contains("Items in your inventory") &&
+                            !words[i].contains("---")) {
+                        String toAdd = words[i].replaceAll(" x\\d+", "")
+                                .replace(" (equipped)", "")
+                                .toLowerCase();
+                        used.remove(toAdd);
+                        used.add(0, toAdd);
+                    }
+                }
             }
             TextView txtCommand = findViewById(R.id.txtCommand);
             LinearLayout layout = findViewById(R.id.layHistory);
