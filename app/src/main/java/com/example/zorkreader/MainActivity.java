@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     keywords.removeAllViews();
                     if (used.size() > 0) {
                         ArrayList<String> toUse = new ArrayList<>(used);
-                        if (charSequence.toString().contains("move")) {
+                        if (charSequence.toString().startsWith("move")) {
                             toUse = new ArrayList<>(Arrays.asList("north", "south", "east", "west"));
                         } else if (charSequence.toString().contains("check")) {
                             toUse = new ArrayList<>(Arrays.asList("room", "move"));
