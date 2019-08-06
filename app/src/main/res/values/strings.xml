@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ZorkReader</string>
+    <string name="app_name">Zork Reader</string>
     <string name="load">Enter a new name or load an id</string>
     <string name="new_player">New Player</string>
     <string name="load_id">Load Id</string>
