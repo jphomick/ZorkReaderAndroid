@@ -1,7 +1,7 @@
 # Zork Reader
 **Zork Reader** is an android application offering a GUI to interact with my [Zork API](https://github.com/jphomick/zorkapi).
 
-The [**ReadHelper.java**](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/java/com/example/zorkreader/ReadHelper.java) class contains a two short static methods for reading the result of the API query; [**MainActivity.java**](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/java/com/example/zorkreader/MainActivity.java) contains everything else, minus the [resources](https://github.com/jphomick/ZorkReaderAndroid/tree/master/app/src/main/res) and [manifest](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/AndroidManifest.xml).
+The [**ReadHelper.java**](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/java/com/example/zorkreader/ReadHelper.java) class contains two short static methods for reading the result of the API query; [**MainActivity.java**](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/java/com/example/zorkreader/MainActivity.java) contains everything else, minus the [resources](https://github.com/jphomick/ZorkReaderAndroid/tree/master/app/src/main/res) and [manifest](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/AndroidManifest.xml).
 
 The entire application takes place in one activity, with two layouts: one to get a session id and another hosting the actual GUI.
 
