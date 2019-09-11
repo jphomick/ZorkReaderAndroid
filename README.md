@@ -18,3 +18,5 @@ Here you can type in commands and press the **GO!** button to communicate with t
 This exciting feature allows you to send commands without typing! Zork Reader will analyze the responses from the Zork API and automatically create buttons for the objects you encounter during your Zork adventure. Each button will add its text to the command submit. The buttons display with a real-time filter. 
 
 Using the command builder, it is possible to play an entire game of Zork without typing in a single word!
+
+For more information on playing Zork through the Zork API, check the [Zork API](https://github.com/jphomick/zorkapi) page.
