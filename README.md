@@ -19,4 +19,6 @@ This exciting feature allows you to send commands without typing! Zork Reader wi
 
 Using the command builder, it is possible to play an entire game of Zork without typing in a single word!
 
+![Zork Reader](https://i.imgur.com/Ga6J40q.jpg)
+
 For more information on playing Zork through the Zork API, check the [Zork API](https://github.com/jphomick/zorkapi) readme.
