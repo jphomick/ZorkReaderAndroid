@@ -3,13 +3,13 @@
 
 The [**ReadHelper.java**](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/java/com/example/zorkreader/ReadHelper.java) class contains two short static methods for reading the result of the API query; [**MainActivity.java**](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/java/com/example/zorkreader/MainActivity.java) contains everything else, minus the [resources](https://github.com/jphomick/ZorkReaderAndroid/tree/master/app/src/main/res) and [manifest](https://github.com/jphomick/ZorkReaderAndroid/blob/master/app/src/main/AndroidManifest.xml).
 
-The entire application takes place in one activity, with two layouts: one to get a session id and another hosting the actual GUI.
+The entire application takes place in one activity, with two layouts: one to get a session id and another hosting the actual GUI. The last session id used will be saved in the application.
 
 ## The GUI
 The GUI for the Zork Reader has three simple parts: the **text history**, the **command submit**, and the **command builder**.
 
 ## Text History
-The text history will display the responses from the API
+The text history will display the responses from the API depending on your commands.
 
 ## Command Submit
 Here you can type in commands and press the **GO!** button to communicate with the API. While the the app is waiting for a response from the API, the button will be replaced with a progress bar.
